@@ -21,8 +21,8 @@ public class NoteService {
         System.out.println("Creating MessageService bean");
     }
 
-    public List<Note> getNotes() {
-        return this.noteMapper.getAllNotes();
+    public List<Note> getNotes(Integer userId) {
+        return this.noteMapper.getAllNotes(userId);
     }
 
     public void addNote(NoteForm noteForm) {

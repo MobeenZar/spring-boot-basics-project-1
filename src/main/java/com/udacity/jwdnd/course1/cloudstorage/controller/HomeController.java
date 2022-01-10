@@ -1,7 +1,9 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
 
+import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
+import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/home")
 public class HomeController {
     private NoteService noteService;
-    private Authentication authentication;
-    public HomeController(NoteService noteService) {
+    private UserService userService;
+    //private Authentication authentication;
+    public HomeController(NoteService noteService, UserService userService) {
+        this.userService = userService;
         this.noteService = noteService;
     }
 
@@ -23,9 +27,10 @@ public class HomeController {
 
     @GetMapping
     public String getNotes(Authentication authentication, Model model) {
-        System.out.println("User name is :" + authentication.getName());
-        model.addAttribute("notes", this.noteService.getNotes()); //authentication.getName()
-        return "homeOrig";
+        User user = userService.getUser(authentication.getName());
+        System.out.println("User name is :" + user.getUsername() + " "  + user.getUserId());
+        model.addAttribute("notes", this.noteService.getNotes(user.getUserId())); //authentication.getName()
+        return "home";
     }
 
 //    @PostMapping
