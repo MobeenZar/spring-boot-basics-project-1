@@ -1,38 +1,54 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
-//import com.udacity.jwdnd.course1.cloudstorage.model.Note;
-//import com.udacity.jwdnd.course1.cloudstorage.model.NoteForm;
+import com.udacity.jwdnd.course1.cloudstorage.model.*;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
-//import org.springframework.security.core.Authentication;
+import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/note")
 public class NoteController {
     private NoteService noteService;
+    private final UserService userService;
 
-    public NoteController(NoteService noteService) {
+    public NoteController(NoteService noteService, UserService userService) {
         this.noteService = noteService;
+        this.userService = userService;
     }
 
-//    @GetMapping
-//    public String getChatPage(NoteForm noteForm, Model model) {
-//        model.addAttribute("notes", this.noteService.getNotes());
-//        return "note";
-//    }
+    @PostMapping("add-note")
+    public String newNote(
+         Authentication authentication, @ModelAttribute("newNote") NoteForm newNote, Model model) {
+         Integer noteId = newNote.getNoteId();
+         //System.out.println("New noteid is " + noteId);
 
-//    @PostMapping
-//    public String postChatMessage(Authentication authentication, NoteForm noteForm, Model model) {
-//        noteForm.setUserName(authentication.getName());
-//
-//        this.noteService.addNote(noteForm);
-//        noteForm.setNoteTitle("");
-//        noteForm.setNoteDescription("");
-//        model.addAttribute("notes", this.noteService.getNotes());  //Make sure to ret only user notes...
-//        return "chat";
-//    }
+        if (noteId == null) {
+            User user = userService.getUser(authentication.getName());
+            newNote.setUserId(user.getUserId());
+            noteService.addNote(newNote);
+        } else {
+            noteService.updateNote(noteId, newNote.getNoteTitle(), newNote.getNoteDescription());
+        }
+        model.addAttribute("result", "success");
+        return "result";
+    }
+
+    @GetMapping(value = "/delete-note/{noteId}/{userId}")
+    public String deleteNote(
+            Authentication authentication,
+            @PathVariable Integer noteId,
+            @PathVariable Integer userId,
+            @ModelAttribute("newNote") NoteForm newNote,
+            //@ModelAttribute("newFile") FileForm newFile,
+            //@ModelAttribute("newCredential") CredentialForm newCredential,
+            Model model) {
+        noteService.deleteNote(noteId);
+//      System.out.println("user id: " + userId + " noteId: " + noteId);
+        model.addAttribute("result", "success");
+
+        return "result";
+    }
 }

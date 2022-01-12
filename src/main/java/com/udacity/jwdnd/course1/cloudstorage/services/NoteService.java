@@ -27,10 +27,22 @@ public class NoteService {
 
     public void addNote(NoteForm noteForm) {
         Note note = new Note();
-        note.setUserName(noteForm.getUserName());
+        note.setUserId(noteForm.getUserId());
         note.setNoteTitle(noteForm.getNoteTitle());
         note.setNoteDescription(noteForm.getNoteDescription());
 
         noteMapper.addNote(note);
+    }
+
+    public Note getNote(Integer noteId) {
+        return noteMapper.getNote(noteId);
+    }
+
+    public void deleteNote(Integer noteId) {
+        noteMapper.deleteNote(noteId);
+    }
+
+    public void updateNote(Integer noteId, String title, String description) {
+        noteMapper.updateNote(noteId, title, description);
     }
 }
