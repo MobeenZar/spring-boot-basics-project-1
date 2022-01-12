@@ -16,7 +16,10 @@ public class CredentialService {
     }
 
     public void addCredential(String url, String userName, String credentialUserName, String key, String password) {
+
+        System.out.println("inside Credential service ...." );
         Integer userId = userMapper.getUser(userName).getUserId();
+        System.out.println("inside Credential service ...." + userId);
         Credential credential = new Credential(0, url, credentialUserName, key, password, userId);
         credentialMapper.insert(credential);
     }

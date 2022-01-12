@@ -6,3 +6,5 @@ INSERT INTO NOTES (noteid, notetitle, notedescription, userid) VALUES (20,'Title
 
 INSERT INTO NOTES (noteid, notetitle, notedescription, userid) VALUES (30,'Title Naba', 'hello world', 20 );
 INSERT INTO NOTES (noteid, notetitle, notedescription, userid) VALUES (40,'Title Naba 2', 'hello world 2', 20 );
+
+--INSERT INTO CREDENTIALS (credentialid, url, username, key, password, userid)  VALUES(1, 'my url', 'user', 'my key', 'my pass', 10);
