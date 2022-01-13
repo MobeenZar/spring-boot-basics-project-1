@@ -30,7 +30,7 @@ public class CredentialController {
     public String newCredential(
             Authentication authentication,
             @ModelAttribute("newCredential") CredentialForm newCredential, Model model) {
-        System.out.println("Inside cred controller");
+        
         String userName = authentication.getName();
         String newUrl = newCredential.getUrl();
         String credentialIdStr = newCredential.getCredentialId();

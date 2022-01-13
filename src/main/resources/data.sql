@@ -1,3 +1,4 @@
+Select * from users;
 --INSERT INTO USERS (userid, username, salt, password, firstname, lastname) VALUES(10, 'user','salt', 'user', 'Mobeen', 'Zar');
 --INSERT INTO USERS (userid, username, salt, password, firstname, lastname) VALUES(20, 'admin','salt', 'admin', 'Naba', 'Zar');
 --

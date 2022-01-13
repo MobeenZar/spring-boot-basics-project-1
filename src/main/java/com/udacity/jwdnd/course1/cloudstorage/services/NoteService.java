@@ -16,10 +16,9 @@ public class NoteService {
         this.noteMapper = noteMapper;
     }
 
-    @PostConstruct
-    public void postConstruct() {
-        System.out.println("Creating MessageService bean");
-    }
+//    @PostConstruct
+//    public void postConstruct() {
+//    }
 
     public List<Note> getNotes(Integer userId) {
         return this.noteMapper.getAllNotes(userId);
