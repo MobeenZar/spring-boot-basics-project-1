@@ -1,6 +1,5 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
-
 import com.udacity.jwdnd.course1.cloudstorage.model.CredentialForm;
 import com.udacity.jwdnd.course1.cloudstorage.model.FileForm;
 import com.udacity.jwdnd.course1.cloudstorage.model.NoteForm;
@@ -9,10 +8,7 @@ import com.udacity.jwdnd.course1.cloudstorage.services.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/home")
@@ -35,7 +31,6 @@ public class HomeController {
     }
 
     @GetMapping
-    //public String getNotes(Authentication authentication, @ModelAttribute("newNote") NoteForm newNote,  Model model) {
     public String getHomePage(
             Authentication authentication,
             @ModelAttribute("newFile") FileForm newFile,
@@ -43,7 +38,7 @@ public class HomeController {
             @ModelAttribute("newCredential") CredentialForm newCredential,
             Model model) {
         User user = userService.getUser(authentication.getName());
-        System.out.println("User name is :" + user.getUsername() + " "  + user.getUserId());
+
         model.addAttribute("notes", this.noteService.getNotes(user.getUserId()));
         model.addAttribute("files", this.fileService.getFileListings(user.getUserId()));
         model.addAttribute("credentials", credentialService.getCredentialListings(user.getUserId()));

@@ -26,24 +26,11 @@ public class CredentialController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public String getHomePage(
-            Authentication authentication, @ModelAttribute("newFile") FileForm newFile,
-            @ModelAttribute("newCredential") CredentialForm newCredential,
-            @ModelAttribute("newNote") NoteForm newNote, Model model) {
-        String userName = authentication.getName();
-        User user = userService.getUser(userName);
-        model.addAttribute("credentials", this.credentialService.getCredentialListings(user.getUserId()));
-        model.addAttribute("encryptionService", encryptionService);
-
-        return "home";
-    }
-
     @PostMapping("add-credential")
     public String newCredential(
-            Authentication authentication, @ModelAttribute("newFile") FileForm newFile,
-            @ModelAttribute("newCredential") CredentialForm newCredential,
-            @ModelAttribute("newNote") NoteForm newNote, Model model) {
+            Authentication authentication,
+            @ModelAttribute("newCredential") CredentialForm newCredential, Model model) {
+        System.out.println("Inside cred controller");
         String userName = authentication.getName();
         String newUrl = newCredential.getUrl();
         String credentialIdStr = newCredential.getCredentialId();
@@ -61,6 +48,7 @@ public class CredentialController {
             Credential existingCredential = getCredential(Integer.parseInt(credentialIdStr));
             credentialService.updateCredential(existingCredential.getCredentialid(), newCredential.getUserName(), newUrl, encodedKey, encryptedPassword);
         }
+
         User user = userService.getUser(userName);
         model.addAttribute("credentials", credentialService.getCredentialListings(user.getUserId()));
         model.addAttribute("encryptionService", encryptionService);
@@ -78,8 +66,7 @@ public class CredentialController {
     public String deleteCredential(
             Authentication authentication, @PathVariable Integer credentialId,
             @ModelAttribute("newCredential") CredentialForm newCredential,
-            @ModelAttribute("newFile") FileForm newFile,
-            @ModelAttribute("newNote") NoteForm newNote, Model model) {
+            Model model) {
         credentialService.deleteCredential(credentialId);
         String userName = authentication.getName();
         User user = userService.getUser(userName);
