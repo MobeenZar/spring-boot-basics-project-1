@@ -62,10 +62,10 @@ class UserTests {
 		Assertions.assertEquals("Sign Up", driver.getTitle());
 
 		SignupPage signupPage = new SignupPage(driver);
-		signupPage.setFirstName("John");
-		signupPage.setLastName("Lennon");
-		signupPage.setUserName("lennon");
-		signupPage.setPassword("julia");
+		signupPage.setFirstName("Mobeen");
+		signupPage.setLastName("Zar");
+		signupPage.setUserName("test");
+		signupPage.setPassword("test");
 		signupPage.signUp();
 
 		driver.get("http://localhost:" + this.port + "/login");
@@ -77,7 +77,7 @@ class UserTests {
 		loginPage.login();
 
 		HomePage homePage = new HomePage(driver);
-		homePage.logout();
+		//homePage.logout();
 
 		driver.get("http://localhost:" + this.port + "/home");
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);

@@ -40,6 +40,7 @@ class NoteTests extends CloudStorageApplicationTests {
 		String noteTitle = "My Note";
 		String noteDescription = "This is my note.";
 		HomePage homePage = signUpAndLogin();
+
 		createNote(noteTitle, noteDescription, homePage);
 		homePage.navToNotesTab();
 		homePage = new HomePage(driver);
@@ -47,6 +48,7 @@ class NoteTests extends CloudStorageApplicationTests {
 		Assertions.assertEquals(noteTitle, note.getNoteTitle());
 		Assertions.assertEquals(noteDescription, note.getNoteDescription());
 		deleteNote(homePage);
+
 		homePage.logout();
 	}
 

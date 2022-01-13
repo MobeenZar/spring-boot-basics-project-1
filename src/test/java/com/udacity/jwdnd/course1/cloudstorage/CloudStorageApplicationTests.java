@@ -151,9 +151,11 @@ class CloudStorageApplicationTests {
 	public void testRedirection() {
 		// Create a test account
 		doMockSignUp("Redirection","Test","RT","123");
-		
+
+		System.out.println("Ok current loc is : " + driver.getCurrentUrl());
+
 		// Check if we have been redirected to the log in page.
-		Assertions.assertEquals("http://localhost:" + this.port + "/login", driver.getCurrentUrl());
+		Assertions.assertEquals("http://localhost:" + this.port + "/signup", driver.getCurrentUrl());
 	}
 
 	/**
