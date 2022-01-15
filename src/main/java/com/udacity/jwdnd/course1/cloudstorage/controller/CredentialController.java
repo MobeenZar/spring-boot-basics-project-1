@@ -18,12 +18,11 @@ public class CredentialController {
 
     private final CredentialService credentialService;
     private final EncryptionService encryptionService;
-    private final UserService userService;
+    //private final UserService userService;
 
-    public CredentialController(CredentialService credentialService, EncryptionService encryptionService, UserService userService) {
+    public CredentialController(CredentialService credentialService, EncryptionService encryptionService) {
         this.credentialService = credentialService;
         this.encryptionService = encryptionService;
-        this.userService = userService;
     }
 
     @PostMapping("add-credential")
@@ -33,7 +32,7 @@ public class CredentialController {
         
         String userName = authentication.getName();
         String newUrl = newCredential.getUrl();
-        String credentialIdStr = newCredential.getCredentialId();
+        Integer credentialId = newCredential.getCredentialId();
         String password = newCredential.getPassword();
 
         SecureRandom random = new SecureRandom();
@@ -42,25 +41,25 @@ public class CredentialController {
         String encodedKey = Base64.getEncoder().encodeToString(key);
         String encryptedPassword = encryptionService.encryptValue(password, encodedKey);
 
-        if (credentialIdStr.isEmpty()) {
+        if (credentialId == null) {
             credentialService.addCredential(newUrl, userName, newCredential.getUserName(), encodedKey, encryptedPassword);
         } else {
-            Credential existingCredential = getCredential(Integer.parseInt(credentialIdStr));
-            credentialService.updateCredential(existingCredential.getCredentialid(), newCredential.getUserName(), newUrl, encodedKey, encryptedPassword);
+            //Credential existingCredential = getCredential(Integer.parseInt(credentialIdStr));
+            credentialService.updateCredential(credentialId, newCredential.getUserName(), newUrl, encodedKey, encryptedPassword);
         }
 
-        User user = userService.getUser(userName);
-        model.addAttribute("credentials", credentialService.getCredentialListings(user.getUserId()));
-        model.addAttribute("encryptionService", encryptionService);
+        //User user = userService.getUser(userName);
+//        model.addAttribute("credentials", credentialService.getCredentialListings(userName)); //user.getUserId()
+//        model.addAttribute("encryptionService", encryptionService);
         model.addAttribute("result", "success");
 
         return "result";
     }
 
-    @GetMapping(value = "/get-credential/{credentialId}")
-    public Credential getCredential(@PathVariable Integer credentialId) {
-        return credentialService.getCredential(credentialId);
-    }
+//    @GetMapping(value = "/get-credential/{credentialId}")
+//    public Credential getCredential(@PathVariable Integer credentialId) {
+//        return credentialService.getCredential(credentialId);
+//    }
 
     @GetMapping(value = "/delete-credential/{credentialId}")
     public String deleteCredential(
@@ -68,10 +67,6 @@ public class CredentialController {
             @ModelAttribute("newCredential") CredentialForm newCredential,
             Model model) {
         credentialService.deleteCredential(credentialId);
-        String userName = authentication.getName();
-        User user = userService.getUser(userName);
-        model.addAttribute("credentials", credentialService.getCredentialListings(user.getUserId()));
-        model.addAttribute("encryptionService", encryptionService);
         model.addAttribute("result", "success");
 
         return "result";

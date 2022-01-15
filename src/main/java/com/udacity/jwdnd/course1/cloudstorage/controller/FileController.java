@@ -39,14 +39,14 @@ public class FileController {
         String fileName = multipartFile.getOriginalFilename();
 
         //Check for duplicate file name
-        String[] fileListings = fileService.getFileListings(userId);
-        for (String fileListing: fileListings) {
-            if (fileListing.equals(fileName)) {
-                model.addAttribute("result", "error");
-                model.addAttribute("message", "You have tried to add a duplicate file.");
-                return "result";
-            }
-        }
+//        String[] fileListings = fileService.getFileListings(userId);
+//        for (String fileListing: fileListings) {
+//            if (fileListing.equals(fileName)) {
+//                model.addAttribute("result", "error");
+//                model.addAttribute("message", "You have tried to add a duplicate file.");
+//                return "result";
+//            }
+//        }
         fileService.addFile(multipartFile, userName);
         model.addAttribute("result", "success");
         return "result";

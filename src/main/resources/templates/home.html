@@ -109,8 +109,11 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="#" method="POST" th:action="@{/note/add-note}" th:object="${newNote}">
-                                            <input type="hidden" name="noteId" th:field="*{noteId}" id="note-id">
+<!--                                        <form action="#" method="POST" th:action="@{/note/add-note}" th:object="${newNote}">-->
+                                        <form action="#" method="POST" th:action="@{'/note/add-note'}" th:object="${newNote}">
+<!--                                            <h2 th:text="$('#note-id').val()" >TEST</h2>  $('#note-id').val(-->
+<!--                                            <h2 th:if = '${noteId != null}'>It is empty!</h2>-->
+                                            <input type="text" name="noteId" th:field="*{noteId}" id="note-id">
                                             <div class="form-group">
                                                 <label for="note-title" class="col-form-label">Title</label>
                                                 <input type="text" name="noteTitle" th:field="*{noteTitle}" class="form-control"

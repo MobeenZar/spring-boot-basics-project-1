@@ -21,13 +21,13 @@ public class CredentialService {
         credentialMapper.insert(credential);
     }
 
-    public Credential[] getCredentialListings(Integer userId) {
-        return credentialMapper.getCredentialListings(userId);
+    public Credential[] getCredentialListings(String userName) {
+        return credentialMapper.getCredentialListings(userName);
     }
 
-    public Credential getCredential(Integer noteId) {
-        return credentialMapper.getCredential(noteId);
-    }
+//    public Credential getCredential(Integer noteId) {
+//        return credentialMapper.getCredential(noteId);
+//    }
 
     public void deleteCredential(Integer noteId) {
         credentialMapper.deleteCredential(noteId);

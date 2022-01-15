@@ -16,26 +16,18 @@ public class NoteService {
         this.noteMapper = noteMapper;
     }
 
-//    @PostConstruct
-//    public void postConstruct() {
-//    }
-
-    public List<Note> getNotes(Integer userId) {
-        return this.noteMapper.getAllNotes(userId);
+    public List<Note> getNotes(String userName) {
+        return this.noteMapper.getAllNotes(userName);
     }
 
     public void addNote(NoteForm noteForm) {
-        Note note = new Note();
-        note.setUserId(noteForm.getUserId());
-        note.setNoteTitle(noteForm.getNoteTitle());
-        note.setNoteDescription(noteForm.getNoteDescription());
-
+        Note note = new Note(null, noteForm.getNoteTitle(), noteForm.getNoteDescription(), noteForm.getUserId() );
         noteMapper.addNote(note);
     }
 
-    public Note getNote(Integer noteId) {
-        return noteMapper.getNote(noteId);
-    }
+//    public Note getNote(Integer noteId) {
+//        return noteMapper.getNote(noteId);
+//    }
 
     public void deleteNote(Integer noteId) {
         noteMapper.deleteNote(noteId);

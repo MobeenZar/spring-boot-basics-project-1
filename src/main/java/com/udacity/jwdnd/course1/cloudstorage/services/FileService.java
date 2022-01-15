@@ -20,8 +20,8 @@ public class FileService {
         this.userMapper = userMapper;
     }
 
-    public String[] getFileListings(Integer userId) {
-        return fileMapper.getFileListings(userId);
+    public String[] getFilesForUser(String userName) {
+        return fileMapper.getFilesForUser(userName);
     }
 
     public void addFile(MultipartFile multipartFile, String userName) throws IOException {
@@ -40,9 +40,8 @@ public class FileService {
         String fileSize = String.valueOf(multipartFile.getSize());
         Integer userId = userMapper.getUser(userName).getUserId();
         File file = new File(0, fileName, contentType, fileSize, userId, fileData);
-        fileMapper.insert(file);
+        fileMapper.insertFile(file);
     }
-
     public File getFile(String fileName) {
         return fileMapper.getFile(fileName);
     }
