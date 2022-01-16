@@ -9,31 +9,36 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
-public class NoteService {
+public class NoteService extends BaseService {
     private NoteMapper noteMapper;
 
     public NoteService(NoteMapper noteMapper) {
         this.noteMapper = noteMapper;
     }
 
-    public List<Note> getNotes(String userName) {
-        return this.noteMapper.getAllNotes(userName);
+    public List<Note> getNotesForUser(String userName) {
+        return this.noteMapper.getNotesForUser(userName);
     }
 
-    public void addNote(NoteForm noteForm) {
-        Note note = new Note(null, noteForm.getNoteTitle(), noteForm.getNoteDescription(), noteForm.getUserId() );
+    public void update(Note note) {
+        if (note.getNoteId() == null) {
+            this.addNote(note);
+        } else {
+            this.updateNote(note);
+        }
+    }
+
+    public void addNote(Note note) {
+        //Note note = new Note(null, note.getNoteTitle(), noteForm.getNoteDescription(),  );
+        note.setUserId(this.getUser(note.getLoggedInUser()).getUserId());
         noteMapper.addNote(note);
     }
-
-//    public Note getNote(Integer noteId) {
-//        return noteMapper.getNote(noteId);
-//    }
 
     public void deleteNote(Integer noteId) {
         noteMapper.deleteNote(noteId);
     }
 
-    public void updateNote(Integer noteId, String title, String description) {
-        noteMapper.updateNote(noteId, title, description);
+    public void updateNote(Note note) {
+        noteMapper.updateNote(note.getNoteId(), note.getNoteTitle(), note.getNoteDescription());
     }
 }

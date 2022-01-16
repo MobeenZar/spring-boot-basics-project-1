@@ -8,7 +8,9 @@ public class Note {
     private String noteTitle;
     private String noteDescription;
     private Integer userId;
+    private String loggedInUser;
 
+    public Note(){}
     public Note(Integer noteId, String noteTitle, String noteDescription, Integer userId) {
         this.noteId = noteId;
         this.noteTitle = noteTitle;

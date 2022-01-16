@@ -6,9 +6,6 @@ import org.apache.ibatis.annotations.*;
 @Mapper
 public interface FileMapper {
 
-//    @Select("SELECT filename FROM FILES WHERE userid = (SELECT userId FROM USERS WHERE username = #{userName})" )
-//    String[] getFilesForUser(String userName);
-
     @Select("SELECT filename FROM FILES WHERE userid = (SELECT userId FROM USERS WHERE username = #{userName})" )
     String[] getFilesForUser(String userName);
 

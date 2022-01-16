@@ -12,43 +12,35 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/note")
 public class NoteController {
     private NoteService noteService;
-    private final UserService userService;
 
-    public NoteController(NoteService noteService, UserService userService) {
+    public NoteController(NoteService noteService) {
         this.noteService = noteService;
-        this.userService = userService;
     }
 
-    @PostMapping("add-note")
-    public String newNote(
-         Authentication authentication, @ModelAttribute("newNote") NoteForm newNote, Model model) {
-         Integer noteId = newNote.getNoteId();
-         //System.out.println("New noteid is " + noteId);
-
-        if (noteId == null) {
-            User user = userService.getUser(authentication.getName());
-            newNote.setUserId(user.getUserId());
-            noteService.addNote(newNote);
-        } else {
-            noteService.updateNote(noteId, newNote.getNoteTitle(), newNote.getNoteDescription());
-        }
-        model.addAttribute("result", "success");
-        return "result";
-    }
-
-    @GetMapping(value = "/delete-note/{noteId}/{userId}")
-    public String deleteNote(
+    @PostMapping
+    public String updateNote(
             Authentication authentication,
+            @ModelAttribute("noteForm") NoteForm noteForm,
+            Model model) {
+
+         Note note = new Note();
+         note.setNoteId(noteForm.getNoteId());
+         note.setUserId(noteForm.getUserId());
+         note.setNoteTitle(noteForm.getNoteTitle());
+         note.setNoteDescription(noteForm.getNoteDescription());
+         note.setLoggedInUser(authentication.getName());
+
+         noteService.update(note);
+         model.addAttribute("result", "success");
+         return "result";
+    }
+
+    @GetMapping(value = "/delete/{noteId}")
+    public String deleteNote(
             @PathVariable Integer noteId,
-            @PathVariable Integer userId,
-            @ModelAttribute("newNote") NoteForm newNote,
-            //@ModelAttribute("newFile") FileForm newFile,
-            //@ModelAttribute("newCredential") CredentialForm newCredential,
             Model model) {
         noteService.deleteNote(noteId);
-//      System.out.println("user id: " + userId + " noteId: " + noteId);
         model.addAttribute("result", "success");
-
         return "result";
     }
 }
