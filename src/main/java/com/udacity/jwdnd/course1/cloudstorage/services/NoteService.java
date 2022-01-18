@@ -22,14 +22,13 @@ public class NoteService extends BaseService {
 
     public void update(Note note) {
         if (note.getNoteId() == null) {
-            this.addNote(note);
+            this.createNote(note);
         } else {
             this.updateNote(note);
         }
     }
 
-    public void addNote(Note note) {
-        //Note note = new Note(null, note.getNoteTitle(), noteForm.getNoteDescription(),  );
+    public void createNote(Note note) {
         note.setUserId(this.getUser(note.getLoggedInUser()).getUserId());
         noteMapper.addNote(note);
     }

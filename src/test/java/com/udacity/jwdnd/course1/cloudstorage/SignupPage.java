@@ -1,55 +1,37 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class SignupPage {
-    @FindBy(id = "inputFirstName")
-    private WebElement inputFirstName;
 
-    @FindBy(id = "inputLastName")
-    private WebElement inputLastName;
+    @FindBy(css = "#inputFirstName")
+    private WebElement firstNameField;
 
-    @FindBy(id = "inputUsername")
-    private WebElement inputUserName;
+    @FindBy(css = "#inputLastName")
+    private WebElement lastNameField;
 
-    @FindBy(id = "inputPassword")
-    private WebElement inputPassword;
+    @FindBy(css = "#inputUsername")
+    private WebElement usernameField;
 
-    @FindBy(id = "buttonSignUp")  //buttonSignUp submit-button
+    @FindBy(css = "#inputPassword")
+    private WebElement passwordField;
+
+    @FindBy(css = "#submit-button")
     private WebElement submitButton;
 
-    private final JavascriptExecutor js;
-    WebDriver driver;
-    public SignupPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
-        js = (JavascriptExecutor) driver;
+    public SignupPage(WebDriver webDriver) {
+        PageFactory.initElements(webDriver, this);
     }
 
-    public void setFirstName(String firstName) {
-        js.executeScript("arguments[0].value='"+ firstName +"';", inputFirstName);
+    public void signup(String firstName, String lastName, String username, String password) {
+        this.firstNameField.sendKeys(firstName);
+        this.lastNameField.sendKeys(lastName);
+        this.usernameField.sendKeys(username);
+        this.passwordField.sendKeys(password);
+        this.submitButton.click();
     }
 
-    public void setLastName(String lastName) {
-        js.executeScript("arguments[0].value='"+ lastName +"';", inputLastName);
-    }
-
-    public void setUserName(String userName) {
-        js.executeScript("arguments[0].value='"+ userName +"';", inputUserName);
-    }
-
-    public void setPassword(String password) {
-        js.executeScript("arguments[0].value='"+ password +"';", inputPassword);
-    }
-
-    public void signUp() {
-        js.executeScript("arguments[0].click();", submitButton);
-        //this.driver.findElement(By.id("buttonSignUp")).click();
-
-    }
 }

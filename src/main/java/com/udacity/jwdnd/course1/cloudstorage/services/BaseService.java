@@ -9,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class BaseService {
     @Autowired
     private UserMapper userMapper;
-//    public BaseService(UserMapper userMapper) {
-//        this.userMapper = userMapper;
-//    }
     public BaseService(){}
 
     public User getUser(String username) {

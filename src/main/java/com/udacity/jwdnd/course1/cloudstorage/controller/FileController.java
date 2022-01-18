@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
+import com.udacity.jwdnd.course1.cloudstorage.model.File;
 import com.udacity.jwdnd.course1.cloudstorage.model.FileForm;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.*;
@@ -19,45 +20,49 @@ import java.io.IOException;
 public class FileController {
 
     private final FileService fileService;
-    private final UserService userService;
+    //private final UserService userService;
 
     public FileController(
-            FileService fileService, UserService userService) {
+            FileService fileService) {
         this.fileService = fileService;
-        this.userService = userService;
+        //this.userService = userService;
     }
 
     @PostMapping
-    public String newFile(Authentication authentication,
+    public String uploadFile(Authentication authentication,
                           @ModelAttribute("newFile") FileForm newFile,
                           Model model) throws IOException {
-        String userName = authentication.getName();
-        User user = userService.getUser(userName);
-        Integer userId = user.getUserId();
+        String fileName = newFile.getFile().getOriginalFilename();
+        if(newFile.getFile().isEmpty()){
+            model.addAttribute("result", "error")
+                 .addAttribute("message", "Please select a file to upload!");
+            return "result";
+        }
 
-        MultipartFile multipartFile = newFile.getFile();
-        String fileName = multipartFile.getOriginalFilename();
+        if(ifFileExists(fileName, authentication.getName())){
+            model.addAttribute("result", "error")
+                    .addAttribute("message", fileName + " already exists.");
+            return "result";
+        }
 
-        //Check for duplicate file name
-//        String[] fileListings = fileService.getFileListings(userId);
-//        for (String fileListing: fileListings) {
-//            if (fileListing.equals(fileName)) {
-//                model.addAttribute("result", "error");
-//                model.addAttribute("message", "You have tried to add a duplicate file.");
-//                return "result";
-//            }
-//        }
-        fileService.addFile(multipartFile, userName);
+        File file = new File();
+        file.setLoggedInUser(authentication.getName());
+        file.setFileName(newFile.getFile().getOriginalFilename());
+        file.setContentType(newFile.getFile().getContentType());
+        file.setFileSize(String.valueOf(newFile.getFile().getSize()));
+        file.setFileData(newFile.getFile().getBytes());
+
+        fileService.uploadFile(file);
         model.addAttribute("result", "success");
         return "result";
     }
 
     @GetMapping("/get-file/{fileName}")
     @ResponseBody
-    public ResponseEntity<byte[]> serveFile(@PathVariable String fileName) {
+    public ResponseEntity<byte[]> serveFile(Authentication authentication, @PathVariable String fileName) {
         HttpHeaders respHeaders = new HttpHeaders();
         respHeaders.add("Content-Disposition", "attachment; filename=" + fileName);
-        return new ResponseEntity<byte[]>(fileService.getFile(fileName).getFileData(), respHeaders, HttpStatus.OK);
+        return new ResponseEntity<byte[]>(fileService.getFile(fileName, authentication.getName()).getFileData(), respHeaders, HttpStatus.OK);
     }
 
     @GetMapping(value = "/delete-file/{fileName}")
@@ -67,6 +72,12 @@ public class FileController {
         fileService.deleteFile(fileName);
         model.addAttribute("result", "success");
         return "result";
+    }
+
+    private  boolean ifFileExists(String fileName, String userName) {
+        File file = fileService.getFile(fileName , userName);
+        if (file == null) return false;
+        else return true;
     }
 }
 

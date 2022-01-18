@@ -9,8 +9,11 @@ public interface FileMapper {
     @Select("SELECT filename FROM FILES WHERE userid = (SELECT userId FROM USERS WHERE username = #{userName})" )
     String[] getFilesForUser(String userName);
 
-    @Select("SELECT * FROM FILES WHERE filename = #{fileName}")
-    File getFile(String fileName);
+    @Select("SELECT * FROM FILES WHERE filename = #{fileName} and userid = (SELECT userId FROM USERS WHERE username = #{userName})")
+    File getFile(String fileName, String userName);
+
+//    @Select("SELECT * FROM FILES WHERE filename = #{fileName} and userid = (SELECT userId FROM USERS WHERE username = #{userName})")
+//    File getFile(String fileName, String userName);
 
     @Insert("INSERT INTO FILES (filename, contenttype, filesize, userid, filedata) " +
             "VALUES(#{fileName}, #{contentType}, #{fileSize}, #{userId}, #{fileData})")
