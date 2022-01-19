@@ -42,26 +42,13 @@ class BaseTests {
 
 	//@Test
 	public String signUpAndLogin() {
-//		String username = "pzastoup";
-//		String password = "whatabadpassword";
-//
-//		driver.get("http://localhost:" + this.port + "/signup");
-//		//Assertions.assertEquals("Sign Up", driver.getTitle());
-//
-//		signupPage.signup("Peter", "Zastoupil", username, password);
-//		driver.get("http://localhost:" + this.port + "/login");
-//		//Assertions.assertEquals("Login", driver.getTitle());
-//
-//		loginPage.login(username, password);
-//		driver.get("http://localhost:" + this.port + "/home");
-//		//Assertions.assertEquals("Home", driver.getTitle());
-		String username = "pzastoup";
-		String password = "whatabadpassword";
+		String username = "jdoe";
+		String password = "abadpassword";
 
 		driver.get("http://localhost:" + this.port + "/signup");
 		Assertions.assertEquals("Sign Up", driver.getTitle());
 
-		signupPage.signup("Peter", "Zastoupil", username, password);
+		signupPage.signup("John", "doe", username, password);
 		driver.get("http://localhost:" + this.port + "/login");
 		Assertions.assertEquals("Login", driver.getTitle());
 
