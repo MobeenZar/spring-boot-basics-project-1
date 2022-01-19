@@ -1,6 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage;
+import com.udacity.jwdnd.course1.cloudstorage.model.Credential;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -19,6 +19,12 @@ public class HomePage {
     @FindBy(css= "#add-note-button")
     private WebElement addNoteButton;
 
+    @FindBy(css = "#edit-note-button")
+    private WebElement editNoteButton;
+
+    @FindBy(css = "#delete-note-button")
+    private WebElement deleteNoteButton;
+
     @FindBy(css= "#note-title")
     private WebElement noteTitle;
 
@@ -34,23 +40,36 @@ public class HomePage {
     @FindBy(css= "#row-note-desc")
     private WebElement rowNoteDesc;
 
-
-    
     // Credential 
     @FindBy(css= "#add-credential-button")
     private WebElement addCredentialButton;
 
+    @FindBy(css = "#edit-credential-button")
+    private WebElement editCredentialButton;
+
+    @FindBy(css = "#delete-credential-button")
+    private WebElement deleteCredentialButton;
+
     @FindBy(css= "#credential-url")
-    private WebElement credentialUrlText;
+    private WebElement credentialUrl;
 
     @FindBy(css= "#credential-username")
-    private WebElement credentialUsernameText;
+    private WebElement credentialUsername;
 
     @FindBy(css= "#credential-password")
-    private WebElement credentialPasswordText;
+    private WebElement credentialPassword;
 
     @FindBy(css= "#save-credential-button")
     private WebElement saveCredentialButton;
+
+    @FindBy(css= "#rec-credential-url")
+    private WebElement recUrl;
+
+    @FindBy(css= "#rec-credential-username")
+    private WebElement recUserName;
+
+    @FindBy(css= "#rec-credential-password")
+    private WebElement recPassword;
 
     public void sleep() {
        try{
@@ -72,36 +91,81 @@ public class HomePage {
 
     public void enterNote(String title, String text)  {
         goToNotesTab();
-        sleep();
         addNoteButton.click();
         sleep();
         noteTitle.sendKeys(title);
         noteDescription.sendKeys(text);
+        saveNoteButton.click();
         sleep();
+    }
+
+    public void editNote(String title, String text)  {
+        goToNotesTab();
+        editNoteButton.click();
+        sleep();
+        noteTitle.clear();
+        noteTitle.sendKeys(title);
+        noteDescription.clear();
+        noteDescription.sendKeys(text);
+        //sleep();
         saveNoteButton.click();
         sleep();
     }
     public Note getFirstNote() {
-        String title = rowNoteTitle.getText(); //wait.until(ExpectedConditions.elementToBeClickable(tableNoteTitle)).getText();
-        String description = rowNoteDesc.getText(); //tableNoteDescription.getText();
+        String title = rowNoteTitle.getText(); //wait.until(ExpectedConditions.elementToBeClickable(rowNoteTitle)).getText();
+        String description = rowNoteDesc.getText(); //rowNoteDesc.getText();
         return new Note(title, description);
     }
 
-
-    //Credential functionality ------------------------------------------------------------
-    public void goToCredentialsTab() throws InterruptedException {
-        credentialsTab.click();
+    public void deleteNote()  {
+        goToNotesTab();
+        deleteNoteButton.click();
+        //sleep();
     }
-//    public void enterCredential(CredentialInTest credentialTest) throws InterruptedException {
-//        goToCredentialsTab();
-//        Thread.sleep(2000);
-//        addCredentialButton.click();
-//        Thread.sleep(1000);
-//        credentialUrlText.sendKeys(credentialTest.url);
-//        credentialUsernameText.sendKeys(credentialTest.username);
-//        credentialPasswordText.sendKeys(credentialTest.password);
-//        credentialSaveButton.click();
-//        Thread.sleep(2000);
-//        //  goToCredentialsTab();
-//    }
+
+
+    //Credential functionality
+    public void goToCredentialsTab() {
+        credentialsTab.click();
+        sleep();
+    }
+
+    public void enterCredential(String url, String userName, String password)  {
+        goToCredentialsTab();
+        addCredentialButton.click();
+        sleep();
+        credentialUrl.sendKeys(url);
+        credentialUsername.sendKeys(userName);
+        credentialPassword.sendKeys(password);
+        //sleep();
+        saveCredentialButton.click();
+        sleep();
+    }
+
+    public void editCredential(String url, String userName, String password)  {
+        goToCredentialsTab();
+        editCredentialButton.click();
+        sleep();
+        credentialUrl.clear();
+        credentialUrl.sendKeys(url);
+
+        credentialUsername.clear();
+        credentialUsername.sendKeys(userName);
+
+        credentialPassword.clear();
+        credentialPassword.sendKeys(password);
+
+        saveCredentialButton.click();
+        sleep();
+    }
+
+    public Credential getFirstCredential() {
+       return new Credential(recUrl.getText(), recUserName.getText(), recPassword.getText());
+    }
+
+    public void deleteCredential()  {
+        goToCredentialsTab();
+        deleteCredentialButton.click();
+        //sleep();
+    }
 }

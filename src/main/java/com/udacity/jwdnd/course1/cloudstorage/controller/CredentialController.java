@@ -29,7 +29,7 @@ public class CredentialController {
         credential.setCredentialId(newCredential.getCredentialId());
         credential.setPassword(newCredential.getPassword());
 
-        credentialService.updateCredential(credential);
+        credentialService.editCredential(credential);
         model.addAttribute("result", "success");
         return "result";
     }
