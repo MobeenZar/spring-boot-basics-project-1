@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @Controller
 @RequestMapping("/file")
-public class FileController {
+public class FileController{
 
     private final FileService fileService;
     //private final UserService userService;
@@ -48,6 +48,7 @@ public class FileController {
         file.setFileName(newFile.getFile().getOriginalFilename());
         file.setContentType(newFile.getFile().getContentType());
         file.setFileSize(String.valueOf(newFile.getFile().getSize()));
+        System.out.println("File size is " + newFile.getFile().getSize());
         file.setFileData(newFile.getFile().getBytes());
 
         fileService.uploadFile(file);
